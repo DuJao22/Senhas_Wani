@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros Salvos - Caixa de Senhas</title>
+    <style>
+        /* 
+        Sistema Caixa de Senhas - Página de Registros
+        Desenvolvido por: João Layon
+        Estilos para visualização de registros salvos
+        */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .filter-bar {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .filter-bar h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stats-bar {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .stats-bar h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .stats-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .stat-item .stats-number {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        .registro-card {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .registro-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .registro-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .carteirinha-info {
+            flex: 1;
+        }
+
+        .carteirinha-numero {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .carteirinha-data {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .senhas-count {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .senhas-lista {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .senha-item {
+            background: #f1f3f4;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .senha-numero {
+            background: #667eea;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .senha-texto {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #2c3e50;
+            word-break: break-all;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .navigation {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+
+        .footer strong {
+            color: #667eea;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .registro-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .senhas-lista {
+                grid-template-columns: 1fr;
+            }
+            
+            .carteirinha-numero {
+                font-size: 1.5em;
+            }
+        }
+
+        /* Animações */
+        .registro-card {
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <!-- Cabeçalho -->
+        <div class="header">
+            <div>
+                <h1>📊 Registros Salvos</h1>
+                <p>Visualização de Carteirinhas e Senhas Cadastradas</p>
+                <div class="nav-buttons" style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">🏠 Página Inicial</a>
+                    {% if current_user.is_admin() %}
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">🛡️ Painel Admin</a>
+                    {% endif %}
+                    <a href="{{ url_for('exportar_dados') }}" class="btn btn-primary">📊 Exportar Dados</a>
+                    <a href="{{ url_for('logout') }}" class="btn" style="background: linear-gradient(45deg, #e74c3c, #c0392b); color: white;">🚪 Sair</a>
+                </div>
+            </div>
+            <div class="user-info" style="text-align: right; font-size: 0.9em; opacity: 0.95; min-width: 200px;">
+                <p>👤 Usuário: <strong>{{ current_user.nome_completo }}</strong></p>
+                <p>🏢 Login: {{ current_user.username }}</p>
+                <p>📍 Unidade: {{ current_user.unidade }}</p>
+                <p>⚡ Tipo: {{ 'Administrador' if current_user.is_admin() else 'Operador' }}</p>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Exibição de mensagens de erro -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-error">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Filtros por Unidade -->
+            {% if current_user.is_admin() or current_user.unidade == 'Ambas' %}
+                <div class="filter-bar">
+                    <h3>🔍 Filtrar por Unidade</h3>
+                    <div class="filter-buttons">
+                        <a href="{{ url_for('visualizar_registros') }}" 
+                           class="btn {{ 'btn-primary' if not unidade_filtro else 'btn-secondary' }}">
+                            🏪 Todas as Unidades
+                        </a>
+                        <a href="{{ url_for('visualizar_registros', unidade='Belo Horizonte') }}" 
+                           class="btn {{ 'btn-primary' if unidade_filtro == 'Belo Horizonte' else 'btn-secondary' }}">
+                            🏢 Belo Horizonte
+                        </a>
+                        <a href="{{ url_for('visualizar_registros', unidade='Contagem') }}" 
+                           class="btn {{ 'btn-primary' if unidade_filtro == 'Contagem' else 'btn-secondary' }}">
+                            🏭 Contagem
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="filter-bar">
+                    <h3>📍 Visualizando registros da unidade: <strong>{{ current_user.unidade }}</strong></h3>
+                    <p style="margin-top: 10px; color: #6c757d;">Como operador, você visualiza apenas os registros da sua unidade.</p>
+                </div>
+            {% endif %}
+
+            <!-- Estatísticas -->
+            {% if estatisticas or registros %}
+                <div class="stats-bar">
+                    <h3>📈 Estatísticas do Sistema</h3>
+                    {% if unidade_filtro %}
+                        <div class="stats-number">{{ registros|length }}</div>
+                        <p>{{ 'Registro' if registros|length == 1 else 'Registros' }} em {{ unidade_filtro }}</p>
+                    {% else %}
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stats-number">{{ registros|length }}</div>
+                                <p>Total de Registros</p>
+                            </div>
+                            {% if estatisticas %}
+                                {% for unidade, total in estatisticas.items() %}
+                                    <div class="stat-item">
+                                        <div class="stats-number">{{ total }}</div>
+                                        <p>{{ unidade }}</p>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <!-- Lista de Registros -->
+            {% if registros %}
+                {% for registro in registros %}
+                    <div class="registro-card">
+                        <!-- Cabeçalho do registro -->
+                        <div class="registro-header">
+                            <div class="carteirinha-info">
+                                <div class="carteirinha-numero">
+                                    🏷️ Carteirinha: {{ registro.carteirinha }}
+                                </div>
+                                <div class="carteirinha-data">
+                                    🏢 Unidade: {{ registro.unidade }}<br>
+                                    📅 Cadastrado em: {{ registro.data_criacao }}
+                                </div>
+                            </div>
+                            <div class="senhas-count">
+                                🔑 {{ registro.total_senhas }} {{ 'senha' if registro.total_senhas == 1 else 'senhas' }}
+                            </div>
+                        </div>
+
+                        <!-- Lista de senhas -->
+                        <div class="senhas-lista">
+                            {% for senha in registro.senhas %}
+                                <div class="senha-item">
+                                    <div class="senha-numero">{{ loop.index }}</div>
+                                    <div class="senha-texto">{{ senha }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Estado vazio -->
+                <div class="empty-state">
+                    <div class="empty-state-icon">📋</div>
+                    <h3>Nenhum registro encontrado</h3>
+                    <p>Ainda não há carteirinhas cadastradas no sistema.</p>
+                    <p>Comece adicionando seu primeiro registro!</p>
+                </div>
+            {% endif %}
+
+            <!-- Navegação -->
+            <div class="navigation">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    ➕ Adicionar Novo Registro
+                </a>
+                {% if registros %}
+                    <a href="{{ url_for('visualizar_registros') }}" class="btn btn-secondary" onclick="window.location.reload()">
+                        🔄 Atualizar Lista
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Rodapé com créditos -->
+        <div class="footer">
+            <p>
+                Sistema desenvolvido por <strong>João Layon</strong> © 2025<br>
+                Caixa de Senhas - Gerenciamento de Senhas por Carteirinha<br>
+                Tecnologias: Flask, SQLite3, HTML5, CSS3, JavaScript
+            </p>
+        </div>
+    </div>
+
+    <script>
+        /*
+        Sistema Caixa de Senhas - JavaScript da Página de Registros
+        Desenvolvido por: João Layon
+        */
+
+        // Animação de entrada para os cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.registro-card');
+            
+            cards.forEach((card, index) => {
+                // Delay progressivo para criar efeito em cascata
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+                    
+                    // Tornar visível
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100);
+            });
+        });
+
+        // Função para copiar senha (funcionalidade futura)
+        function copiarSenha(senha) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(senha).then(() => {
+                    // Feedback visual de cópia bem-sucedida
+                    const toast = document.createElement('div');
+                    toast.textContent = 'Senha copiada!';
+                    toast.style.cssText = `
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        background: #28a745;
+                        color: white;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        z-index: 1000;
+                        animation: fadeInOut 2s ease;
+                    `;
+                    
+                    document.body.appendChild(toast);
+                    setTimeout(() => document.body.removeChild(toast), 2000);
+                });
+            }
+        }
+
+        // CSS para animação do toast
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translateY(20px); }
+                20%, 80% { opacity: 1; transform: translateY(0); }
+                100% { opacity: 0; transform: translateY(-20px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

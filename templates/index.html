@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caixa de Senhas - Sistema de Gerenciamento</title>
+    <style>
+        /* 
+        Sistema Caixa de Senhas - Estilos CSS
+        Desenvolvido por: João Layon
+        Interface responsiva e funcional
+        */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .password-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid #e9ecef;
+        }
+
+        .password-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .password-input-group input {
+            flex: 1;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            font-size: 1.2em;
+            padding: 15px 40px;
+            width: 100%;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+        }
+
+        .nav-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .user-info {
+            text-align: right;
+            font-size: 0.9em;
+            opacity: 0.95;
+            min-width: 200px;
+        }
+
+        .user-info p {
+            margin: 3px 0;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .password-list {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            border: 1px solid #dee2e6;
+        }
+
+        .password-list h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .password-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f1f3f4;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .password-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .password-text {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .remove-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .remove-btn:hover {
+            background: #c82333;
+        }
+
+        .counter {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1.1em;
+            color: #6c757d;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .navigation {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+
+        .footer strong {
+            color: #667eea;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .password-input-group {
+                flex-direction: column;
+            }
+            
+            .password-item {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+
+        /* Animações */
+        .password-item {
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <!-- Cabeçalho do Sistema -->
+        <div class="header">
+            <div>
+                <h1>🔐 Caixa de Senhas</h1>
+                <p>Sistema de Gerenciamento de Senhas por Carteirinha</p>
+                <p><em>Desenvolvido por João Layon</em></p>
+                <div class="nav-buttons">
+                    {% if current_user.is_admin() %}
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">🛡️ Painel Admin</a>
+                    {% endif %}
+                    <a href="{{ url_for('visualizar_registros') }}" class="btn btn-secondary">📋 Ver Registros Salvos</a>
+                    <a href="{{ url_for('exportar_dados') }}" class="btn btn-primary">📊 Exportar Dados</a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-danger">🚪 Sair</a>
+                </div>
+            </div>
+            <div class="user-info">
+                <p>👤 Usuário: <strong>{{ current_user.nome_completo }}</strong></p>
+                <p>🏢 Login: {{ current_user.username }}</p>
+                <p>📍 Unidade: {{ current_user.unidade }}</p>
+                <p>⚡ Tipo: {{ 'Administrador' if current_user.is_admin() else 'Operador' }}</p>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Exibição de mensagens flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Formulário principal -->
+            <form id="senhasForm" method="POST" action="{{ url_for('adicionar_registro') }}">
+                <!-- Campo Carteirinha -->
+                <div class="form-group">
+                    <label for="carteirinha">
+                        📋 Número da Carteirinha
+                    </label>
+                    <input 
+                        type="text" 
+                        id="carteirinha" 
+                        name="carteirinha" 
+                        class="form-control" 
+                        placeholder="Digite o número da carteirinha"
+                        required
+                    >
+                </div>
+
+                <!-- Campo Unidade -->
+                <div class="form-group">
+                    <label for="unidade">
+                        🏢 Unidade de Atendimento
+                    </label>
+                    <select 
+                        id="unidade" 
+                        name="unidade" 
+                        class="form-control" 
+                        required
+                    >
+                        {% if current_user.is_admin() or current_user.unidade == 'Ambas' %}
+                            <option value="">Selecione a unidade</option>
+                            <option value="Belo Horizonte">Belo Horizonte</option>
+                            <option value="Contagem">Contagem</option>
+                        {% elif current_user.unidade == 'Belo Horizonte' %}
+                            <option value="Belo Horizonte" selected>Belo Horizonte</option>
+                        {% elif current_user.unidade == 'Contagem' %}
+                            <option value="Contagem" selected>Contagem</option>
+                        {% else %}
+                            <option value="">Selecione a unidade</option>
+                            <option value="Belo Horizonte">Belo Horizonte</option>
+                            <option value="Contagem">Contagem</option>
+                        {% endif %}
+                    </select>
+                </div>
+
+                <!-- Seção de Senhas -->
+                <div class="password-section">
+                    <div class="form-group">
+                        <label for="novaSenha">
+                            🔑 Adicionar Nova Senha
+                        </label>
+                        <div class="password-input-group">
+                            <input 
+                                type="text" 
+                                id="novaSenha" 
+                                class="form-control" 
+                                placeholder="Digite uma senha"
+                                maxlength="50"
+                            >
+                            <button type="button" id="btnAdicionarSenha" class="btn btn-primary">
+                                ➕ Adicionar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contador de senhas -->
+                    <div class="counter">
+                        <strong>Senhas adicionadas: <span id="contador">0</span> / 5</strong>
+                    </div>
+
+                    <!-- Lista de senhas -->
+                    <div class="password-list">
+                        <h4>📝 Senhas da Carteirinha:</h4>
+                        <div id="listaSenhas">
+                            <p style="color: #6c757d; text-align: center; font-style: italic;">
+                                Nenhuma senha adicionada ainda
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campo oculto para enviar senhas -->
+                <input type="hidden" id="senhasHidden" name="senhas" value="">
+
+                <!-- Botão Salvar -->
+                <button type="submit" id="btnSalvar" class="btn btn-success" disabled>
+                    💾 Salvar Registro
+                </button>
+            </form>
+
+            <!-- Navegação -->
+            <div class="navigation">
+                <a href="{{ url_for('visualizar_registros') }}" class="btn btn-secondary">
+                    📊 Visualizar Registros Salvos
+                </a>
+            </div>
+        </div>
+
+        <!-- Rodapé com créditos -->
+        <div class="footer">
+            <p>
+                Sistema desenvolvido por <strong>João Layon</strong> © 2025<br>
+                Tecnologias: Flask, SQLite3, HTML5, CSS3, JavaScript
+            </p>
+        </div>
+    </div>
+
+    <script>
+        /*
+        Sistema Caixa de Senhas - JavaScript
+        Desenvolvido por: João Layon
+        Funcionalidades de interface dinâmica
+        */
+
+        // Array para armazenar as senhas
+        let senhas = [];
+        const MAX_SENHAS = 5;
+
+        // Elementos do DOM
+        const novaSenhaInput = document.getElementById('novaSenha');
+        const btnAdicionarSenha = document.getElementById('btnAdicionarSenha');
+        const listaSenhas = document.getElementById('listaSenhas');
+        const contador = document.getElementById('contador');
+        const senhasHidden = document.getElementById('senhasHidden');
+        const btnSalvar = document.getElementById('btnSalvar');
+        const carteirinhaInput = document.getElementById('carteirinha');
+        const unidadeSelect = document.getElementById('unidade');
+
+        // Event listeners
+        btnAdicionarSenha.addEventListener('click', adicionarSenha);
+        novaSenhaInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                adicionarSenha();
+            }
+        });
+        novaSenhaInput.addEventListener('input', validarEntrada);
+        carteirinhaInput.addEventListener('input', validarFormulario);
+        unidadeSelect.addEventListener('change', validarFormulario);
+
+        /**
+         * Adiciona uma nova senha à lista
+         * Desenvolvido por João Layon
+         */
+        function adicionarSenha() {
+            const novaSenha = novaSenhaInput.value.trim();
+            
+            // Validações
+            if (!novaSenha) {
+                alert('Por favor, digite uma senha!');
+                novaSenhaInput.focus();
+                return;
+            }
+            
+            if (senhas.length >= MAX_SENHAS) {
+                alert(`Máximo de ${MAX_SENHAS} senhas permitidas!`);
+                return;
+            }
+            
+            if (senhas.includes(novaSenha)) {
+                alert('Esta senha já foi adicionada!');
+                novaSenhaInput.focus();
+                return;
+            }
+            
+            // Adicionar senha ao array
+            senhas.push(novaSenha);
+            
+            // Limpar input
+            novaSenhaInput.value = '';
+            
+            // Atualizar interface
+            atualizarLista();
+            atualizarContador();
+            atualizarCampoOculto();
+            validarFormulario();
+            
+            // Focar no input se ainda não atingiu o limite
+            if (senhas.length < MAX_SENHAS) {
+                novaSenhaInput.focus();
+            }
+        }
+
+        /**
+         * Remove uma senha da lista
+         * Desenvolvido por João Layon
+         */
+        function removerSenha(index) {
+            senhas.splice(index, 1);
+            atualizarLista();
+            atualizarContador();
+            atualizarCampoOculto();
+            validarFormulario();
+            
+            // Reabilitar input se estava desabilitado
+            if (senhas.length < MAX_SENHAS) {
+                novaSenhaInput.disabled = false;
+                btnAdicionarSenha.disabled = false;
+            }
+        }
+
+        /**
+         * Atualiza a lista visual de senhas
+         * Desenvolvido por João Layon
+         */
+        function atualizarLista() {
+            if (senhas.length === 0) {
+                listaSenhas.innerHTML = `
+                    <p style="color: #6c757d; text-align: center; font-style: italic;">
+                        Nenhuma senha adicionada ainda
+                    </p>
+                `;
+                return;
+            }
+            
+            let html = '';
+            senhas.forEach((senha, index) => {
+                html += `
+                    <div class="password-item">
+                        <span class="password-text">${index + 1}. ${senha}</span>
+                        <button type="button" class="remove-btn" onclick="removerSenha(${index})">
+                            ❌ Remover
+                        </button>
+                    </div>
+                `;
+            });
+            
+            listaSenhas.innerHTML = html;
+        }
+
+        /**
+         * Atualiza o contador de senhas
+         * Desenvolvido por João Layon
+         */
+        function atualizarContador() {
+            contador.textContent = senhas.length;
+            
+            // Desabilitar input se atingiu o limite
+            if (senhas.length >= MAX_SENHAS) {
+                novaSenhaInput.disabled = true;
+                btnAdicionarSenha.disabled = true;
+                novaSenhaInput.placeholder = 'Limite máximo de senhas atingido';
+            } else {
+                novaSenhaInput.disabled = false;
+                btnAdicionarSenha.disabled = false;
+                novaSenhaInput.placeholder = 'Digite uma senha';
+            }
+        }
+
+        /**
+         * Atualiza o campo oculto com as senhas
+         * Desenvolvido por João Layon
+         */
+        function atualizarCampoOculto() {
+            senhasHidden.value = senhas.join(',');
+        }
+
+        /**
+         * Valida a entrada de nova senha
+         * Desenvolvido por João Layon
+         */
+        function validarEntrada() {
+            const valor = novaSenhaInput.value.trim();
+            btnAdicionarSenha.disabled = !valor || senhas.length >= MAX_SENHAS;
+        }
+
+        /**
+         * Valida o formulário completo
+         * Desenvolvido por João Layon
+         */
+        function validarFormulario() {
+            const carteirinha = carteirinhaInput.value.trim();
+            const unidade = unidadeSelect.value.trim();
+            const temSenhas = senhas.length > 0;
+            
+            btnSalvar.disabled = !carteirinha || !unidade || !temSenhas;
+        }
+
+        /**
+         * Validação antes do envio do formulário
+         * Desenvolvido por João Layon
+         */
+        document.getElementById('senhasForm').addEventListener('submit', function(e) {
+            const carteirinha = carteirinhaInput.value.trim();
+            const unidade = unidadeSelect.value.trim();
+            
+            if (!carteirinha) {
+                e.preventDefault();
+                alert('Por favor, informe o número da carteirinha!');
+                carteirinhaInput.focus();
+                return;
+            }
+            
+            if (!unidade) {
+                e.preventDefault();
+                alert('Por favor, selecione a unidade!');
+                unidadeSelect.focus();
+                return;
+            }
+            
+            if (senhas.length === 0) {
+                e.preventDefault();
+                alert('Por favor, adicione pelo menos uma senha!');
+                novaSenhaInput.focus();
+                return;
+            }
+            
+            // Confirmar salvamento
+            const confirmacao = confirm(
+                `Confirmar salvamento?\n\n` +
+                `Carteirinha: ${carteirinha}\n` +
+                `Unidade: ${unidade}\n` +
+                `Total de senhas: ${senhas.length}\n\n` +
+                `Senhas: ${senhas.join(', ')}`
+            );
+            
+            if (!confirmacao) {
+                e.preventDefault();
+            }
+        });
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            validarFormulario();
+            novaSenhaInput.focus();
+        });
+    </script>
+</body>
+</html>
